@@ -1,8 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import AppRouter from "./Routers/AppRouter";
-// import 'normalize.css/normalize.css';
-import './styles/styles.scss';
+import React, {Component} from 'react';
+import Header from "./Components/Header";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import ProductList from "./Components/ProductList";
+import Details from "./Components/Details";
+import Cart from "./Components/Cart";
+import NotFoundPage from "./Components/NotFoundPage";
 
-ReactDOM.render(<AppRouter/>, document.getElementById('app'));
-
+export default class App extends Component {
+	render() {
+		return (
+			<BrowserRouter>
+				<Header/>
+				<Switch>
+					<Route exact path={"/"} component={ProductList}/>
+					<Route path={"/details"} component={Details}/>
+					<Route path={"/cart"} component={Cart}/>
+					{/*<Route path={"/edit/:id"} component={ProductList}/>*/}
+					{/*<Route path={"/store"} component={Store}/>*/}
+					<Route component={NotFoundPage}/>
+				</Switch>
+			</BrowserRouter>
+		);
+	}
+};
