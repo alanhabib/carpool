@@ -3,36 +3,54 @@ import axios from "axios";
 
 class ProductList extends Component {
 
+	state = {
+		metros: []
+	};
+
 	componentDidMount() {
 		this.getDataHandler();
 	}
 
-	getDataHandler =  () => {
+	getDataHandler = () => {
 		const url = "https://api.sl.se/api2/realtimedeparturesV4.json?key=6f599d82c2e744b2a5801b0aedf6a96e&siteid=9192&timewindow=30";
 		axios.get(url)
 			.then((res) => {
-				console.log("#### api response 1", res);
-				res.data.ResponseData.Metros.map(metros => {
-					console.log("#### api response 2", metros);
+				return res.data.ResponseData.Metros.map(metros => {
+					this.setState({
+						metros: [...this.state.metros, metros]
+					}, () => {
+						console.log("#### metros 1", this.state.metros);
+					});
 				})
 			}, (error) => {
 				console.log("####, error", error);
 			})
-		// const response =  fetch(url, {
-		// 	mode: "no-cors",
-		// 	cache: "no-cache",
-		// 	headers: {
-		// 		"Content-Type": "application/json"
-		// 	}
-		// });
-		// return response.json();
+	};
+
+	destinationStationHandler = () => {
+		return this.state.metros.slice(0,9).map((station, index) => {
+			console.log("#### metros 2", station);
+			return (
+				<div key={index}>
+					<ul>
+						<li>
+							{station.Destination}
+						</li>
+						<li>
+							Avgång: {station.DisplayTime}
+						</li>
+						<li>
+							Anländer: {station.TimeTabledDateTime}
+						</li>
+					</ul>
+				</div>
+			)
+		});
 	};
 
 	render() {
 		return (
-			<div>
-				<h1>hello from Productlist</h1>
-			</div>
+			this.destinationStationHandler()
 		);
 	}
 }
