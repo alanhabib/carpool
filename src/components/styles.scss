@@ -1,0 +1,21 @@
+.circle {
+  animation: pulse 1500ms infinite;
+  width: 16px;
+  height: 16px;
+  background-color: rgb(0, 255, 18);
+  border-radius: 50%;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.6);
+    box-shadow: 0 0 0 0 rgba(24, 158, 11, 0.58);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 16px rgba(255, 82, 82, 0);
+  }
+  100% {
+    transform: scale(0.6);
+  }
+}
