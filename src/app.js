@@ -6,33 +6,34 @@ import useInterval from "./components/useInterval"
 import {Pulse} from "./components/pulse";
 
 function App() {
-	const [clients, setClients] = useState(getLocalStorage("clients"));
+	const initialState = getLocalStorage("clients");
+	const [clients, setClients] = useState(initialState);
 	const [carByOwner, setCarByOwner] = useState("");
 	const [statusCar, setStatusCar] = useState("");
 
 
-	function setLocalStorage(key, value) {
-		localStorage.setItem(key, JSON.stringify(value))
-	}
-
-	function getLocalStorage(key) {
-		let value = localStorage.getItem(key);
-		return JSON.parse(value)
-	}
-
 	useEffect(() => {
 		if(!clients) {
-			setClients(clientsData);
+			setClients(clientsData)
 		}
 	}, []);
 
 	useEffect(() => {
 		setLocalStorage("clients", clients);
-		getLocalStorage("clients")
+		getLocalStorage("clients");
 	}, [clients]);
 
-	useInterval(async () => {
-		const localStorage = await getLocalStorage("clients");
+	function setLocalStorage(key, value) {
+		window.localStorage.setItem(key, JSON.stringify(value))
+	}
+
+	function getLocalStorage(key) {
+		let value = window.localStorage.getItem(key);
+		return JSON.parse(value)
+	}
+
+	useInterval(() => {
+		const localStorage = getLocalStorage("clients");
 		localStorage.map(client => {
 			return client.cars.map(car => {
 				if(Math.random() > 0.5) {
@@ -40,43 +41,25 @@ function App() {
 				}
 			})
 		});
-		await setLocalStorage("clients", localStorage);
-		await setClients(localStorage)
+		setLocalStorage("clients", localStorage);
+		setClients(localStorage);
+		console.log("## statuscar", statusCar);
 	}, 60000);
-
-	// useInterval(async () => {
-	// 	const localStorage = await getLocalStorage("clients");
-	// 	localStorage.map(client => {
-	// 		return client.cars.map(car => {
-	// 			car.status === "on" && setActive(true)
-	// 		})
-	// 	});
-	// }, 4000);
 
 	function valueHandler(event) {
 		const {value} = event.target;
 		setCarByOwner(value)
 	}
 
-	function statusOn() {
-		setStatusCar(prevState => prevState !== "on" ? "on" : prevState)
-	}
-
-	function statusOff() {
-		setStatusCar(prevState => prevState !== "off" ? "off" : prevState)
+	function statusHandler(show) {
+		setStatusCar(prevStat => prevStat !== show ? show : "")
 	}
 
 	function lessThanMinute(date) {
 		const MINUTE = 1000 * 60;
 		const aMinuteAgo = Date.now().valueOf() - MINUTE;
 		const prevDate = Date.parse(date).valueOf();
-		if(prevDate > aMinuteAgo) {
-			console.log("on");
-			return "on"
-		} else {
-			console.log("off");
-			return "off"
-		}
+		return prevDate > aMinuteAgo
 	}
 
 	const filteredClients = clients.filter(client => client.name.match(carByOwner));
@@ -89,31 +72,40 @@ function App() {
 					setCarByOwner={setCarByOwner}
 					valueHandler={valueHandler}
 				/>
-				<StatusCarsSelect setStatusCar={setStatusCar} statusOn={statusOn} statusOff={statusOff}/>
+				<StatusCarsSelect
+					lessThanMinute={lessThanMinute}
+					setStatusCar={setStatusCar}
+					statusHandler={statusHandler}
+					statusCar={statusCar}
+				/>
 			</div>
-			{filteredClients.map(client => (
-				<div style={{border: "1px solid blue", borderRadius: 6, padding: 12, margin: 12}}
-					 key={client.id}>
-					<h2>{client.name}</h2>
-					<h4>{client.address}</h4>
-					{client.cars.filter(car => car.status.match(statusCar)).map((newCar, index) => {
-						return <div key={index}>
-							<h4 style={{margin: 0}}>Vehicle:</h4>
-							<ul style={{
-								margin: "4px 0",
-								border: "1px dashed green",
-								padding: 12,
-								listStyleType: "none"
-							}}>
-								<li>Vehicle ID: {newCar.vehicleId}</li>
-								<li>Reg Number: {newCar.regNumber}</li>
-								<li>Status: {newCar.timeStamp}</li>
-								{lessThanMinute(newCar.timeStamp) === "on" ? <Pulse/> : null}
-							</ul>
-						</div>
-					})}
-				</div>
-			))}
+			{filteredClients
+				.map(client => (
+					<div style={{border: "1px solid blue", borderRadius: 6, padding: 12, margin: 12}}
+						 key={client.id}>
+						<h2>{client.name}</h2>
+						<h4>{client.address}</h4>
+						{client.cars
+							.filter(car => lessThanMinute(car.timeStamp) !== (statusCar))
+							.map((newCar, index) => {
+								return <div key={index}>
+									<h4 style={{margin: 0}}>Vehicle:</h4>
+									<ul style={{
+										margin: "4px 0",
+										border: "1px dashed green",
+										padding: 12,
+										listStyleType: "none"
+									}}>
+										<li>Vehicle ID: {newCar.vehicleId}</li>
+										<li>Reg Number: {newCar.regNumber}</li>
+										<li>Timestamp: {newCar.timeStamp}</li>
+										<li>Status: {lessThanMinute(newCar.timeStamp) ? "On" : "Off"}</li>
+										{lessThanMinute(newCar.timeStamp) ? <Pulse/> : null}
+									</ul>
+								</div>
+							})}
+					</div>
+				))}
 		</div>
 	);
 }
