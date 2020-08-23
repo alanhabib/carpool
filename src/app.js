@@ -43,7 +43,6 @@ function App() {
 		});
 		setLocalStorage("clients", localStorage);
 		setClients(localStorage);
-		console.log("## statuscar", statusCar);
 	}, 60000);
 
 	function valueHandler(event) {
