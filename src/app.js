@@ -8,24 +8,21 @@ import Clients from "./components/clients";
 
 function App() {
 	const initialState = getLocalStorage("clients");
-	const [clients, setClients] = useState(initialState);
+	const [clients, setClients] = useState(
+		initialState ? initialState : clientsData
+	);
 	const [carByOwner, setCarByOwner] = useState("");
 	const [statusCar, setStatusCar] = useState("");
 
-
 	useEffect(() => {
-		let data = getLocalStorage("clients");
-		if(!data) {
-			data = setLocalStorage("clients", clientsData);
-			setClients(data);
+		if(!initialState) {
+			setLocalStorage("clients", clientsData);
 		}
 	}, []);
 
 	useEffect(() => {
 		setLocalStorage("clients", clients);
-		getLocalStorage("clients");
 	}, [clients]);
-
 
 	useInterval(() => {
 		const localStorage = getLocalStorage("clients");
@@ -49,7 +46,7 @@ function App() {
 		setStatusCar(prevStat => prevStat !== show ? show : "")
 	}
 
-	const filteredClients = clients ? clients.filter(client => client.name.match(carByOwner)) : [];
+	const filteredClients = clients.filter(client => client.name.match(carByOwner));
 	return (
 		<div>
 			<div style={{
