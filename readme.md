@@ -1,4 +1,4 @@
-##Download the code. 
+## Download the code. 
  - In terminal root of the projekt type "npm install && npm start" to run the project
 
 # Code Challenge
