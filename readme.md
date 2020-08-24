@@ -1,3 +1,6 @@
+##Download the code. 
+ - In terminal root of the projekt type "npm install && npm start" to run the project
+
 # Code Challenge
 
 	- Imagine you are one of our consultants and you got assigned to a project at one of our top partners.
