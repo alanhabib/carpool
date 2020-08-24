@@ -19,7 +19,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.scss$/,
+				test: /\.s?css$/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					"css-loader",   // Turns CSS into JS

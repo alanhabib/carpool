@@ -1,3 +1,17 @@
 {
-  "testRegex": "((\\.|/*.)(test))\\.js?$"
+  "testRegex": "((\\.|/*.)(test))\\.js?$",
+  "setupFilesAfterEnv": [
+    "<rootDir>/setupTest.js"
+  ],
+  "moduleFileExtensions": [
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "moduleNameMapper": {
+    "^.+\\.(css|less|scss)$": "babel-jest",
+    "^.+\\.(jpg|png|gif|svg)$": "identity-obj-proxy"
+  }
 }

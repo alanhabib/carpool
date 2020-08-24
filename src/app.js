@@ -49,7 +49,7 @@ function App() {
 		setStatusCar(prevStat => prevStat !== show ? show : "")
 	}
 
-	const filteredClients = clients.filter(client => client.name.match(carByOwner));
+	const filteredClients = clients ? clients.filter(client => client.name.match(carByOwner)) : [];
 	return (
 		<div>
 			<div style={{

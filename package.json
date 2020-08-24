@@ -8,6 +8,7 @@
     "@babel/preset-react": "^7.9.4",
     "babel-jest": "^26.3.0",
     "babel-loader": "^8.1.0",
+    "identity-obj-proxy": "^3.0.0",
     "install": "^0.12.2",
     "jest": "^26.4.1",
     "npm": "^6.11.2",
@@ -33,6 +34,7 @@
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest-css-modules": "^2.1.0",
     "mini-css-extract-plugin": "^0.10.0",
     "react-router-dom": "^5.2.0",
     "react-test-renderer": "^16.13.1",
@@ -50,6 +52,10 @@
     "test:watch": "npm run test -- --watch"
   },
   "jest": {
+    "transform": {
+      "^.+\\.jsx$": "babel-jest",
+      "^.+\\.js$": "babel-jest"
+    },
     "setupFiles": [
       "./src/setupTest.js"
     ],
@@ -58,7 +64,7 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|scss|less|sass)$": "<rootDir>/__mocks__/styleMock.js"
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js"
     }
   },
   "keywords": [],

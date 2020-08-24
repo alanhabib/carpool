@@ -1,10 +1,11 @@
-import React from "react";
-import {shallow} from "enzyme";
-import App from "./App";
-import toJson from "enzyme-to-json";
+import React from 'react'
+import {shallow} from 'enzyme'
+import App from './App'
 
-describe('My Test Suite', () => {
-	it('My Test Case', () => {
-		expect(true).toEqual(true);
-	});
+describe('App', () => {
+	it('renders without crashing', () => {
+		const wrapper = shallow(<App/>);
+
+		expect(wrapper).toBeTruthy();
+	})
 });
