@@ -1,20 +1,18 @@
 import React from 'react';
 
-function StatusCarsSelect({statusCar, onHandler, statusHandler, statusOff, setStatusCar}) {
+function StatusCarsSelect({statusHandler}) {
 
 	return (
 		<div>
 			<div onClick={() => {
 				statusHandler(false);
-				console.log("## statusCar", statusCar);
 			}}>
-				ON
+				{"ON"}
 			</div>
 			<div onClick={() => {
 				statusHandler(true);
-				console.log("## statusCar", statusCar);
 			}}>
-				OFF
+				{"OFF"}
 			</div>
 		</div>
 	);
